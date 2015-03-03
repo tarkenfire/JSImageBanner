@@ -1,12 +1,12 @@
 var Banner = function(){
     var isInit = false;
+    var areImagesStaged = false;
     
     var mWidth = 0; var mHeight = 0;
-    var mMainImageURL; var mAvatarImageURL; var mBrandingImageUrl;
+    var mArgs;
     var mImages = {};
-    var mSources = [];
     
-    function loadImages(sources, callback){
+    function loadImages(sources, callback, loadCallback){
         var images = {};
         var loadedImages = 0;
         var numImages = 0;
@@ -17,47 +17,55 @@ var Banner = function(){
             images[src] = new Image();
             images[src].onload = function(){
                 if (++loadedImages >= numImages){
-                    callback(images)
+                    callback(images, loadCallback)
                 }
             }
             images[src].src = sources[src];            
         }  
     }
     
-    function onImagesLoaded(images){
+    function onImagesLoaded(images, loadCallback){
         mImages = images;
+        areImagesStaged = true;
+        loadCallback();
+        console.log("images loaded");
     }
     
     return{
-        "init": function(width, height){
+        "init": function(width, height, args){
             mWidth = width;
             mHeight = height;
-            isInit = true;
-        },
-        "setMainImageURL" : function(imageURL){
-            mMainImageURL = imageURL;
-        },
-        "setAvatarImageURL" : function (avatarURL){
-            mAvatarImageURL = avatarURL;
-        },
-        "setBrandingImageURL": function (brandingURL){
-            mBrandingImageURL = brandingURL;
-        },
-        "stageImages" : function(){
-            if (mMainImageURL != undefined){
-                mSources.push({mainImage: mMainImageURL});
+            mArgs = args;
+            
+            console.log (args);
+            isInit = true;            
+        },        
+        "stageImages" : function(onLoad){            
+            var urls = [];
+            
+            if (mArgs.mainImage != undefined){
+                urls.push(mArgs.mainImage);                
             }
             
-            if (mAvatarURLImage != undefined){
-                mSources.push({avatarImage: mAvatarURLImage});
+            if (mArgs.avatarImage != undefined){
+                urls.push(mArgs.avatarImage);                
             }
             
-            if (mBrandingImageURL != undefined){
-                mSources.push({brandingImage: mBrandingImageURL});
+            if (mArgs.brandingImage != undefined){
+                urls.push(mArgs.brandingImage);                
             }
             
-            loadImages(mSources, onImagesLoaded);            
-        }
-        
+            loadImages(urls, onImagesLoaded, onLoad);
+        },
+        "getImage" : function(){
+            if (!areImagesStaged){
+                console.log("Images not staged");
+                return;
+            }
+            
+            console.log("Image staged");
+            
+            
+        }    
     }    
 }();
