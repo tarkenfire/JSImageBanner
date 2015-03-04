@@ -90,6 +90,9 @@ var Banner = function(){
             var context = canvas.getContext("2d");
             
             //get variables from arguments
+            var bottomThirdColor = mArgs.bottomThirdColor != undefined ? mArgs.bottomThirdColor : "#FF0000";
+            var brandingBarColor = mArgs.brandingBarColor != undefined ? mArgs.brandingBarColor : "#CC0000";
+            
             var username = mArgs.avatarText != undefined ? mArgs.avatarText : "@Username";
             var usernameTextSize = mArgs.avatarTextSize != undefined ? mArgs.avatarTextSize : 16;
             var usernameTextFont = mArgs.avatarTextFont != undefined ? mArgs.avatarTextFont : "Avenir Heavy, Sans-serif";
@@ -109,9 +112,7 @@ var Banner = function(){
             var threeFifthsHeight = (3/5) * mHeight;
             var twoFifthsHeight = (2/5) * mHeight;
             var nintyThreePercentHeight = (93/100) * mHeight;
-            var sevenPercentHeight = (7/100) * mHeight;
-            
-            var nintyPercentWidth = (9/10) * mWidth;
+            var sevenPercentHeight = (7/100) * mHeight;            
             
             
             //background
@@ -121,11 +122,11 @@ var Banner = function(){
             context.drawImage(mainImage, 0, 0, mWidth, threeFifthsHeight);
             
             //bottom third
-            context.fillStyle = "#FF0000";
+            context.fillStyle = bottomThirdColor;
             context.fillRect(0, threeFifthsHeight, mWidth, twoFifthsHeight);
             
             //branding bar
-            context.fillStyle = "#CC0000";
+            context.fillStyle = brandingBarColor;
             context.fillRect(0, nintyThreePercentHeight, mWidth, sevenPercentHeight);
             
             //avatar image
@@ -147,16 +148,13 @@ var Banner = function(){
             context.fillText(username, 62, 42);
             
             //title
-            context.font = "50pt Avenir Heavy, Sans-serif";            
+            context.font = titleTextSize + "pt " + titleTextFont;            
             context.shadowOffsetX = 0;
             context.fillStyle = titleTextColor;
             
             var titleY = threeFifthsHeight + titleTextSize + 15;
             
-            wrapText(context, title, 10, titleY, mWidth - 10, titleTextSize + 10)
-            //context.fillText(title, 10, threeFifthsHeight + titleTextSize + 15);
-            
-            
+            wrapText(context, title, 10, titleY, mWidth - 10, titleTextSize + 10)        
             
             var image = new Image();
             image.src = canvas.toDataURL("image/png");
