@@ -155,10 +155,8 @@ var Banner = function(){
             var titleY = threeFifthsHeight + titleTextSize + 15;
             
             wrapText(context, title, 10, titleY, mWidth - 10, titleTextSize + 10)        
-            
-            var image = new Image();
-            image.src = canvas.toDataURL("image/png");
-            return image;        
+                    
+            return canvas;        
         }    
     }    
 }();
