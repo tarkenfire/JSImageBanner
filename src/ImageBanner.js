@@ -31,6 +31,27 @@ var Banner = function(){
         console.log(images);
     }
     
+    function wrapText(context, text, x, y, maxWidth, lineHeight) {
+        var words = text.split(' ');
+        var line = '';
+        
+        for(var n = 0; n < words.length; n++) {
+            var testLine = line + words[n] + ' ';
+            var metrics = context.measureText(testLine);
+            var testWidth = metrics.width;
+            
+            if (testWidth > maxWidth && n > 0) {
+                context.fillText(line, x, y);
+                line = words[n] + ' ';
+                y += lineHeight;
+            }
+            else {
+                line = testLine;
+            }
+        }
+        context.fillText(line, x, y);
+    }
+    
     return{
         "init": function(width, height, args){
             mWidth = width;
@@ -77,6 +98,7 @@ var Banner = function(){
             
             var title = mArgs.titleText != undefined ? mArgs.titleText : "Story Title";
             var titleTextFont = mArgs.titleTextFont != undefined ? mArgs.titleTextFont : "Avenir Heavy, Sans-serif";
+            var titleTextSize = mArgs.titleTextSize != undefined ? mArgs.titleTextSize : 50;
             var titleTextColor = mArgs.titleTextColor != undefined ? mArgs.titleTextColor : "#FFFFFF";
             
             var mainImage = mImages[0] != undefined ? mImages[0] : new Image();
@@ -88,6 +110,8 @@ var Banner = function(){
             var twoFifthsHeight = (2/5) * mHeight;
             var nintyThreePercentHeight = (93/100) * mHeight;
             var sevenPercentHeight = (7/100) * mHeight;
+            
+            var nintyPercentWidth = (9/10) * mWidth;
             
             
             //background
@@ -109,7 +133,7 @@ var Banner = function(){
             
             //branding image
             var bX = (mWidth - brandingImage.width) - 10;
-            var bY = (mHeight - brandingImage.height) - (sevenPercentHeight - brandingImage.height );
+            var bY = (mHeight - brandingImage.height) - 10;
             
             context.drawImage(brandingImage, bX, bY, brandingImage.width, brandingImage.height);
             
@@ -126,8 +150,11 @@ var Banner = function(){
             context.font = "50pt Avenir Heavy, Sans-serif";            
             context.shadowOffsetX = 0;
             context.fillStyle = titleTextColor;
-            context.fillText(title, 10, threeFifthsHeight);
             
+            var titleY = threeFifthsHeight + titleTextSize + 15;
+            
+            wrapText(context, title, 10, titleY, mWidth - 10, titleTextSize + 10)
+            //context.fillText(title, 10, threeFifthsHeight + titleTextSize + 15);
             
             
             
