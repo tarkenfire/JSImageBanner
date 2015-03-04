@@ -1,15 +1,34 @@
 <!DOCTYPE html>
 <html>
     <head></head>
-    <body>        
+    <body>
+        <img id="imagebox">
+        
+        <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
         <script src="../src/ImageBanner.js"></script>
         
         <script>
-            Banner.init(650, 650, {mainImage: "http://placehold.it/650x300", avatarImage: "http://placehold.it/50x50", brandingImage: "http://placehold.it/50x100"});
+            Banner.init(650, 650, {
+                        mainImage: "img/image1.png",
+                        titleText: "This Is A Long Title",
+                        titleTextFont: "Avenir Heavy, Sans-serif",
+                        
+                        avatarImage: "img/avatar.png",
+                        avatarText: "@TheMuffinMan",
+                        avatarTextSize: 16,
+                        avatarTextColor: "#FFFFFF",
+                        avatarTextFont:"Avenir Heavy, Sans-serif",
+                        avatarTextShadowColor: "#000000",
+                        
+                        brandingImage: "img/branding.png",                        
+                        });
             
             Banner.stageImages(function(){
                 
-                Banner.getImage();
+                    var image = Banner.getImage();
+                    console.log(image);
+                    document.body.appendChild(image);
+                    
                 });        
             
             

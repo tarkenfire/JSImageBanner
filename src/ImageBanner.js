@@ -28,7 +28,7 @@ var Banner = function(){
         mImages = images;
         areImagesStaged = true;
         loadCallback();
-        console.log("images loaded");
+        console.log(images);
     }
     
     return{
@@ -60,12 +60,80 @@ var Banner = function(){
         "getImage" : function(){
             if (!areImagesStaged){
                 console.log("Images not staged");
-                return;
+                return undefined;
             }
             
-            console.log("Image staged");
+            var canvas = document.createElement("canvas");
+            canvas.width = mWidth;
+            canvas.height = mHeight;
+            var context = canvas.getContext("2d");
+            
+            //get variables from arguments
+            var username = mArgs.avatarText != undefined ? mArgs.avatarText : "@Username";
+            var usernameTextSize = mArgs.avatarTextSize != undefined ? mArgs.avatarTextSize : 16;
+            var usernameTextFont = mArgs.avatarTextFont != undefined ? mArgs.avatarTextFont : "Avenir Heavy, Sans-serif";
+            var usernameTextColor = mArgs.avatarTextColor != undefined ? mArgs.avatarTextColor : "#FFFFFF";
+            var usernameTextShadowColor = mArgs.avatarTextShadowColor != undefined ? mArgs.avatarTextShadowColor : "#000000";
+            
+            var title = mArgs.titleText != undefined ? mArgs.titleText : "Story Title";
+            var titleTextFont = mArgs.titleTextFont != undefined ? mArgs.titleTextFont : "Avenir Heavy, Sans-serif";
+            var titleTextColor = mArgs.titleTextColor != undefined ? mArgs.titleTextColor : "#FFFFFF";
+            
+            var mainImage = mImages[0] != undefined ? mImages[0] : new Image();
+            var avatarImage = mImages[1] != undefined ? mImages[1] : new Image();
+            var brandingImage = mImages[2] != undefined ? mImages[2] : new Image();
+            
+            //drawing constants
+            var threeFifthsHeight = (3/5) * mHeight;
+            var twoFifthsHeight = (2/5) * mHeight;
+            var nintyThreePercentHeight = (93/100) * mHeight;
+            var sevenPercentHeight = (7/100) * mHeight;
             
             
+            //background
+            context.fillRect(0, 0, mWidth, mHeight);
+                                
+            //top image
+            context.drawImage(mainImage, 0, 0, mWidth, threeFifthsHeight);
+            
+            //bottom third
+            context.fillStyle = "#FF0000";
+            context.fillRect(0, threeFifthsHeight, mWidth, twoFifthsHeight);
+            
+            //branding bar
+            context.fillStyle = "#CC0000";
+            context.fillRect(0, nintyThreePercentHeight, mWidth, sevenPercentHeight);
+            
+            //avatar image
+            context.drawImage(avatarImage, 10, 10, 42, 42);
+            
+            //branding image
+            var bX = (mWidth - brandingImage.width) - 10;
+            var bY = (mHeight - brandingImage.height) - (sevenPercentHeight - brandingImage.height );
+            
+            context.drawImage(brandingImage, bX, bY, brandingImage.width, brandingImage.height);
+            
+            //username text            
+            context.fillStyle = usernameTextColor;
+            
+            context.font =  usernameTextSize+ "pt " + usernameTextFont;
+            context.shadowColor = usernameTextShadowColor;
+            context.shadowOffsetX = 2;
+            context.fillStyle = usernameTextColor;
+            context.fillText(username, 62, 42);
+            
+            //title
+            context.font = "50pt Avenir Heavy, Sans-serif";            
+            context.shadowOffsetX = 0;
+            context.fillStyle = titleTextColor;
+            context.fillText(title, 10, threeFifthsHeight);
+            
+            
+            
+            
+            var image = new Image();
+            image.src = canvas.toDataURL("image/png");
+            return image;        
         }    
     }    
 }();
