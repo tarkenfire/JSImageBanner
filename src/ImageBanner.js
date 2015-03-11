@@ -119,7 +119,8 @@ var Banner = function(){
             context.fillRect(0, 0, mWidth, mHeight);
                                 
             //top image
-            context.drawImage(mainImage, 0, 0, mWidth, threeFifthsHeight);
+            context.drawImage(mainImage, mWidth/2, 0, mWidth, threeFifthsHeight, 0, 0 , mWidth, threeFifthsHeight);
+            
             
             //bottom third
             context.fillStyle = bottomThirdColor;
